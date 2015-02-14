@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+require "rubygems"
+gem "prez", "= 0.0.1"
+gem "thor", "~> 0.19"
+require "prez/cli"
+Prez::CLI.start
