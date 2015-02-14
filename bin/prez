@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 require "rubygems"
 gem "prez", "= 0.0.1"
+gem "sass", "~> 3.4"
+gem "therubyracer", "~> 0.12"
 gem "thor", "~> 0.19"
+gem "uglifier", "~> 2.7"
 require "prez/cli"
 Prez::CLI.start

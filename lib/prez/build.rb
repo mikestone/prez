@@ -1,5 +1,6 @@
-require "prez/files"
+require "prez/assets"
 require "thor/actions"
+require "thor/error"
 require "thor/group"
 
 module Prez
@@ -40,13 +41,13 @@ module Prez
     end
 
     def javascript(name)
-      %{<script type="text/javascript">\n#{Prez::Files.contents name, "js"}</script>}
+      Prez::Assets.javascript name
     rescue Prez::Files::MissingError
       raise Thor::Error.new(set_color("Could not find file: '#{name}.js'", :red, :bold))
     end
 
     def stylesheet(name)
-      %{<style type="text/css">\n#{Prez::Files.contents name, "css"}</style>}
+      Prez::Assets.stylesheet name
     rescue Prez::Files::MissingError
       raise Thor::Error.new(set_color("Could not find file: '#{name}.css'", :red, :bold))
     end
