@@ -5,6 +5,12 @@ module Prez
   module Helpers
     protected
 
+    def slide
+      concat %{<div class="slide">}
+      yield
+      concat %{</div>}
+    end
+
     def javascript(name)
       Prez::Assets.javascript name
     rescue Prez::Files::MissingError

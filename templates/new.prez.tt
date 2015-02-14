@@ -6,5 +6,10 @@
   </head>
 
   <body>
+    <%% slide do %>
+      <p>
+        Put each slide inside slide blocks.
+      </p>
+    <%% end %>
   </body>
 </html>

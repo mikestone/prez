@@ -1,3 +1,4 @@
+require "erb"
 require "prez/helpers"
 require "thor/actions"
 require "thor/error"
@@ -24,7 +25,8 @@ module Prez
     end
 
     def generate_html
-      template filename, html_filename
+      @_slide_contents = ERB.new(File.read(filename), nil, "-", "@output_buffer").result(binding)
+      template "build.html.tt", html_filename
     end
 
     private
@@ -43,7 +45,7 @@ module Prez
 
     class << self
       def source_root
-        File.expand_path "."
+        File.absolute_path File.expand_path("../../../templates", __FILE__)
       end
     end
   end

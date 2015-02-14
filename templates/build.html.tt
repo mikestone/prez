@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <%= javascript "jquery" %>
+    <%= javascript "prez-controller" %>
+    <%= stylesheet "prez-controller" %>
+  </head>
+
+  <body>
+    <script type="x/template" id="slides-document">
+      <![CDATA[<%= @_slide_contents %>]]>
+    </script>
+  </body>
+</html>
