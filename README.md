@@ -14,9 +14,9 @@ If you want to create a new presentation:
 
     $ prez new MyPresentation
 
-Modify the resulting template file, and generate the final file:
+Modify the resulting template file, and build the final file:
 
-    $ prez MyPresentation
+    $ prez build MyPresentation
 
 Copy the file where-ever you want and then run it by opening it in
 your browser!
