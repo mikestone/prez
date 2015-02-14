@@ -18,7 +18,7 @@ module Prez
       end
 
       if filename =~ /\.html$/
-        raise Thor::Error.new(set_color("Prez file cannot be html file: '#{name}'", :red, :bold))
+        raise Thor::Error.new(set_color("Prez file cannot be an html file: '#{name}'", :red, :bold))
       end
     end
 
