@@ -1,6 +1,7 @@
 require "bundler/gem_tasks"
 require_relative "gem_info.rb"
 
+desc "Generate bin/prez based on the current dependencies."
 task :generate do
   puts "Generating bin/prez"
   File.write File.expand_path("../bin/prez", __FILE__), %{#!/usr/bin/env ruby
