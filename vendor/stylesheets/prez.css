@@ -1,0 +1,46 @@
+body {
+    padding: 40px;
+}
+
+.header {
+    font-size: 32px;
+}
+
+.contact {
+    font-size: 25px;
+}
+
+.url {
+    color: blue;
+}
+
+.gem {
+    color: #bb0000;
+    font-weight: bold;
+}
+
+.slide, .slide input {
+    font-size: 50;
+}
+
+.slide {
+    display: none;
+    min-height: 750px;
+    text-align: center;
+}
+
+.slide.left-aligned {
+    text-align: left;
+}
+
+.smaller {
+    font-size: 0.7em;
+}
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    margin-bottom: 42px;
+}
