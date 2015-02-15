@@ -7,10 +7,11 @@ module Prez
     end
 
     class Paths
-      attr_reader :extension, :paths
+      attr_reader :extension_alias, :extensions, :paths
 
-      def initialize(extension, dirname)
-        @extension = extension
+      def initialize(extension_alias, extensions, dirname)
+        @extension_alias = extension_alias
+        @extensions = extensions
 
         @paths = [].tap do |paths|
           paths << File.expand_path(".")
@@ -21,21 +22,23 @@ module Prez
 
       def find(name)
         paths.each do |path|
-          file = File.join path, "#{name}.#{extension}"
+          extensions.each do |extension|
+            file = File.join path, "#{name}.#{extension}"
 
-          if File.exists?(file)
-            return file
+            if File.exists?(file)
+              return file
+            end
           end
         end
 
-        raise Prez::Files::MissingError.new(name, extension)
+        raise Prez::Files::MissingError.new(name, extension_alias)
       end
     end
 
     class << self
       SEARCH_PATHS = {
-        "js" => Prez::Files::Paths.new("js", "javascripts"),
-        "css" => Prez::Files::Paths.new("css", "stylesheets")
+        "js" => Prez::Files::Paths.new("js", ["js.coffee", "coffee", "js"], "javascripts"),
+        "css" => Prez::Files::Paths.new("css", ["css.scss", "scss", "css"], "stylesheets")
       }
 
       def contents(name, extension)

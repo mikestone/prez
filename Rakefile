@@ -6,6 +6,7 @@ task :generate do
   puts "Generating bin/prez"
   File.write File.expand_path("../bin/prez", __FILE__), %{#!/usr/bin/env ruby
 require "rubygems"
+gem "coffee-script", "#{Prez::Gem.dependencies[:coffee_script]}"
 gem "prez", "= #{Prez::Version}"
 gem "sass", "#{Prez::Gem.dependencies[:sass]}"
 gem "therubyracer", "#{Prez::Gem.dependencies[:therubyracer]}"

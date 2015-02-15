@@ -6,6 +6,14 @@
   </head>
 
   <body>
+    <p>
+      <input type="checkbox" id="new-window" checked="true" /> Launch in new window
+    </p>
+
+    <p>
+      <button id="launch">Start Presentation</button>
+    </p>
+
     <script type="x/template" id="slides-document">
       <![CDATA[<%= @_slide_contents %>]]>
     </script>

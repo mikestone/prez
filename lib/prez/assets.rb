@@ -1,3 +1,4 @@
+require "coffee-script"
 require "prez/files"
 require "sass"
 require "uglifier"
@@ -5,11 +6,12 @@ require "uglifier"
 module Prez
   module Assets
     class Tagged
-      attr_reader :name, :contents
+      attr_reader :name, :contents, :file
 
       def initialize(name, options = {})
         @name = name
         @contents = Prez::Files.contents name, extension
+        @file = Prez::Files.find name, extension
         @dev = options.fetch :dev, false
       end
 
@@ -48,6 +50,7 @@ module Prez
       end
 
       def minify(contents)
+        contents = CoffeeScript.compile contents if file =~ /\.coffee$/
         Uglifier.compile contents
       end
     end
