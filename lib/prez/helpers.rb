@@ -11,7 +11,13 @@ module Prez
     end
 
     def slide
-      concat %{<div class="slide">}
+      concat %{<div class="prez-slide">}
+      yield
+      concat %{</div>}
+    end
+
+    def notes
+      concat %{<div class="prez-notes">}
       yield
       concat %{</div>}
     end

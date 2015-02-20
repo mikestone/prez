@@ -27,6 +27,13 @@
       <p>
         <input type="button" class="end-prez" value="end presentation" />
       </p>
+
+      <p>
+        Current slide: <span class="current-slide-number"></span>
+      </p>
+
+      <div id="slide-notes">
+      </div>
     </div>
   </body>
 </html>

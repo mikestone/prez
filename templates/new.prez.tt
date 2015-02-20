@@ -8,6 +8,12 @@
       <p>
         Put each slide inside slide blocks.
       </p>
+
+      <%% notes do %>
+        <p>
+          Nest your slide notes inside the slide.
+        </p>
+      <%% end %>
     <%% end %>
   </body>
 </html>

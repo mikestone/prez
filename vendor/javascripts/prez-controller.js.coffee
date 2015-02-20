@@ -17,25 +17,28 @@ class Prez
         changeToHashSlide = =>
             hash = @document.location.hash.replace /^#/, ""
 
-            if /^\d+$/.test(hash) && $(".slide[data-slide='#{hash}']", @document).length > 0
+            if /^\d+$/.test(hash) && $(".prez-slide[data-slide='#{hash}']", @document).length > 0
                 @changeSlideTo hash
                 true
             else
                 false
 
-        $(".slide", @document).each (i) -> $(@).attr "data-slide", "#{i + 1}"
+        $(".prez-slide", @document).each (i) -> $(@).attr "data-slide", "#{i + 1}"
         @changeSlideTo 1 unless changeToHashSlide()
         $(@window).on "hashchange", changeToHashSlide
 
     changeSlideTo: (nextValue) ->
-        $next = $ ".slide[data-slide='#{nextValue}']", @document
+        $next = $ ".prez-slide[data-slide='#{nextValue}']", @document
         return false if $next.size() == 0
-        $(".slide", @document).hide()
+        $(".prez-slide", @document).hide()
         $next.show()
+        notes = $next.find(".prez-notes").html() || ""
+        $("#slide-notes").html notes
+        $(".current-slide-number").text $next.data("slide")
         true
 
     changeSlideBy: (amount) ->
-        current = parseInt $(".slide:visible", @document).data("slide"), 10
+        current = parseInt $(".prez-slide:visible", @document).data("slide"), 10
         nextValue = current + amount
 
         if @changeSlideTo(nextValue)

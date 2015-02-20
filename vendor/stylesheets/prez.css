@@ -19,17 +19,17 @@ body {
     font-weight: bold;
 }
 
-.slide, .slide input {
+.prez-slide, .prez-slide input {
     font-size: 50;
 }
 
-.slide {
+.prez-slide {
     display: none;
     min-height: 750px;
     text-align: center;
 }
 
-.slide.left-aligned {
+.prez-slide.left-aligned {
     text-align: left;
 }
 
@@ -43,4 +43,8 @@ dt {
 
 dd {
     margin-bottom: 42px;
+}
+
+.prez-notes {
+    display: none;
 }
