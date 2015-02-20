@@ -6,16 +6,27 @@
   </head>
 
   <body>
-    <p>
-      <input type="checkbox" id="new-window" checked="true" /> Launch in new window
-    </p>
+    <div id="pre-launch">
+      <p>
+        <input type="checkbox" id="new-window" checked="true" /> Launch in new window
+      </p>
 
-    <p>
-      <button id="launch">Start Presentation</button>
-    </p>
+      <p>
+        <button id="launch">Start Presentation</button>
+      </p>
 
-    <script type="x/template" id="slides-document">
-      <![CDATA[<%= @_slide_contents %>]]>
-    </script>
+      <div id="slides-document" style="display: none;"><%= html_escape @_slide_contents %></div>
+    </div>
+
+    <div id="post-launch">
+      <p>
+        <input type="button" class="prev-slide" value="previous" />
+        <input type="button" class="next-slide" value="next" />
+      </p>
+
+      <p>
+        <input type="button" class="end-prez" value="end presentation" />
+      </p>
+    </div>
   </body>
 </html>

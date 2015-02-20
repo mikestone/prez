@@ -1,9 +1,14 @@
+require "cgi"
 require "prez/assets"
 require "thor/error"
 
 module Prez
   module Helpers
     protected
+
+    def html_escape(value)
+      CGI.escape_html value
+    end
 
     def slide
       concat %{<div class="slide">}
