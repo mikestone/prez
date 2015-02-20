@@ -1,34 +1,63 @@
-class PrezController
+class Prez
     constructor: ->
         @window = window.open "", "prez", "width=640,height=480"
-        @window.document.write $("#slides-document").text()
-        @window.prez.start()
+        @document = @window.document
+        @document.write $("#slides-document").text()
+        @start()
         $("#pre-launch").hide()
         $("#post-launch").show()
 
-        $(@window).bind "beforeunload", =>
+        $(@window).bind "beforeunload", ->
             $("#post-launch").hide()
             $("#pre-launch").show()
-            PrezController.current = null
+            Prez.current = null
             return undefined
 
-    nextSlide: -> @window.prez.nextSlide()
-    prevSlide: -> @window.prez.prevSlide()
-    end: -> @window.prez.end()
+    start: ->
+        changeToHashSlide = =>
+            hash = @document.location.hash.replace /^#/, ""
+
+            if /^\d+$/.test(hash) && $(".slide[data-slide='#{hash}']", @document).length > 0
+                @changeSlideTo hash
+                true
+            else
+                false
+
+        $(".slide", @document).each (i) -> $(@).attr "data-slide", "#{i + 1}"
+        @changeSlideTo 1 unless changeToHashSlide()
+        $(@window).on "hashchange", changeToHashSlide
+
+    changeSlideTo: (nextValue) ->
+        $next = $ ".slide[data-slide='#{nextValue}']", @document
+        return false if $next.size() == 0
+        $(".slide", @document).hide()
+        $next.show()
+        true
+
+    changeSlideBy: (amount) ->
+        current = parseInt $(".slide:visible", @document).data("slide"), 10
+        nextValue = current + amount
+
+        if @changeSlideTo(nextValue)
+            @document.location.hash = nextValue
+
+    nextSlide: -> @changeSlideBy 1
+    prevSlide: -> @changeSlideBy -1
+    end: -> @window.close()
 
 $(document).on "click", ".next-slide", (e) ->
     e.preventDefault()
-    PrezController.current?.nextSlide()
+    Prez.current?.nextSlide()
 
 $(document).on "click", ".prev-slide", (e) ->
     e.preventDefault()
-    PrezController.current?.prevSlide()
+    Prez.current?.prevSlide()
 
 $(document).on "click", ".end-prez", (e) ->
     e.preventDefault()
-    PrezController.current?.end()
+    Prez.current?.end()
 
 $(document).on "click", "#launch", (e) ->
     e.preventDefault()
-    return if PrezController.current
-    PrezController.current = new PrezController()
+    return if Prez.current
+    Prez.current = new Prez()

@@ -1,7 +1,5 @@
 <html>
   <head>
-    <%%= javascript "jquery" %>
-    <%%= javascript "prez" %>
     <%%= stylesheet "prez" %>
   </head>
 

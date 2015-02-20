@@ -31,7 +31,7 @@ module Prez
         if dev?
           "#{open}\n#{contents}#{close}"
         else
-          "#{open}#{minified_contents}#{close}"
+          "#{open}#{minified_contents.strip}#{close}"
         end
       end
     end
