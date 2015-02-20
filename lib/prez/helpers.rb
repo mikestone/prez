@@ -1,6 +1,6 @@
 require "cgi"
 require "prez/assets"
-require "thor/error"
+require "prez/error"
 
 module Prez
   module Helpers
@@ -19,13 +19,13 @@ module Prez
     def javascript(name)
       Prez::Assets.javascript name
     rescue Prez::Files::MissingError
-      raise Thor::Error.new(set_color("Could not find file: '#{name}.js'", :red, :bold))
+      raise Prez::Error.new("Could not find file: '#{name}.js'")
     end
 
     def stylesheet(name)
       Prez::Assets.stylesheet name
     rescue Prez::Files::MissingError
-      raise Thor::Error.new(set_color("Could not find file: '#{name}.css'", :red, :bold))
+      raise Prez::Error.new("Could not find file: '#{name}.css'")
     end
   end
 end

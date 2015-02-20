@@ -1,5 +1,5 @@
+require "prez/error"
 require "thor/actions"
-require "thor/error"
 require "thor/group"
 
 module Prez
@@ -9,7 +9,7 @@ module Prez
 
     def check_file!
       if File.exists? filename
-        raise Thor::Error.new(set_color("There is already a presentation file named '#{filename}'", :red, :bold))
+        raise Prez::Error.new("There is already a presentation file named '#{filename}'")
       end
     end
 

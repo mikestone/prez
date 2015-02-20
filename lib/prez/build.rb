@@ -1,7 +1,7 @@
 require "erb"
+require "prez/error"
 require "prez/helpers"
 require "thor/actions"
-require "thor/error"
 require "thor/group"
 
 module Prez
@@ -16,11 +16,11 @@ module Prez
       elsif File.exists? "#{name}.prez"
         @filename = "#{name}.prez"
       else
-        raise Thor::Error.new(set_color("Missing prez file '#{name}'", :red, :bold))
+        raise Prez::Error.new("Missing prez file '#{name}'")
       end
 
       if filename =~ /\.html$/
-        raise Thor::Error.new(set_color("Prez file cannot be an html file: '#{name}'", :red, :bold))
+        raise Prez::Error.new("Prez file cannot be an html file: '#{name}'")
       end
     end
 
