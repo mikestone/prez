@@ -1,10 +1,12 @@
+require "launchy"
 require "prez/builder"
 require "prez/error"
 require "thor/actions"
 require "thor/group"
+require "webrick"
 
 module Prez
-  class Build < Thor::Group
+  class Start < Thor::Group
     include Thor::Actions
     include Prez::Builder
     argument :name, type: :string
@@ -24,26 +26,43 @@ module Prez
     end
 
     def generate_html
-      create_file html_filename, build_html(filename)
+      say "Generating html..."
+      @html = build_html filename
+    end
+
+    def start_server
+      say "Starting server..."
+      server = WEBrick::HTTPServer.new Port: 0, Logger: Prez::Start::NoopLog.new, AccessLog: []
+      port = server.config[:Port]
+
+      server.mount_proc "/" do |request, response|
+        response.body = @html
+        server.stop
+      end
+
+      begin
+        Launchy.open "http://localhost:#{port}/"
+        server.start
+      ensure
+        server.shutdown
+      end
     end
 
     private
-
-    def base_name
-      filename.sub /\.prez$/, ""
-    end
 
     def filename
       @filename
     end
 
-    def html_filename
-      "#{base_name}.html"
-    end
-
     class << self
       def source_root
         File.absolute_path File.expand_path("../../../templates", __FILE__)
+      end
+    end
+
+    class NoopLog < WEBrick::BasicLog
+      def initialize
+        @level = INFO
       end
     end
   end

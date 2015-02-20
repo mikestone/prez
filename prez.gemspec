@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "coffee-script", Prez::Gem.dependencies[:coffee_script]
+  spec.add_dependency "launchy", Prez::Gem.dependencies[:launchy]
   spec.add_dependency "sass", Prez::Gem.dependencies[:sass]
   spec.add_dependency "therubyracer", Prez::Gem.dependencies[:therubyracer]
   spec.add_dependency "thor", Prez::Gem.dependencies[:thor]

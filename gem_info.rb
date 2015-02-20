@@ -8,6 +8,7 @@ module Prez
       def dependencies
         {
           coffee_script: "~> 2.3",
+          launchy: "~> 2.4",
           sass: "~> 3.4",
           therubyracer: "~> 0.12",
           thor: "~> 0.19",

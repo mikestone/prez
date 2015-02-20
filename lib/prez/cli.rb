@@ -1,5 +1,6 @@
 require "prez/build"
 require "prez/new"
+require "prez/start"
 require "prez/version"
 require "thor"
 
@@ -7,6 +8,7 @@ module Prez
   class CLI < Thor
     register Prez::Build, "build", "build NAME", "Builds the single html presentation from the prez file"
     register Prez::New, "new", "new NAME", "Generates a new presentation"
+    register Prez::Start, "start", "start NAME", "Launches your browser with the given presentation"
 
     map "-v" => "version"
 

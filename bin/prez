@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require "rubygems"
 gem "coffee-script", "~> 2.3"
+gem "launchy", "~> 2.4"
 gem "prez", "= 0.0.2"
 gem "sass", "~> 3.4"
 gem "therubyracer", "~> 0.12"
