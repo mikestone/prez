@@ -1,5 +1,6 @@
 require "coffee-script"
 require "prez/files"
+require "prez/sass_extensions"
 require "sass"
 require "uglifier"
 
