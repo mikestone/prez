@@ -1,0 +1,21 @@
+@import "prez/variables";
+
+html, body, #container, #pre-launch, #post-launch {
+    height: 100%;
+}
+
+#pre-launch #filler {
+    height: 25%;
+}
+
+#post-launch {
+    display: none;
+}
+
+#post-launch iframe {
+    display: block;
+    height: 50%;
+    margin: 0 auto;
+    min-height: $prez-slide-min-height + (2 * $prez-padding);
+    width: 80%;
+}

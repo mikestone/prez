@@ -4,7 +4,7 @@ class Prez
 
     constructor: (options) ->
         @options = $.extend {}, DEFAULT_OPTIONS, options
-        @window = window.open "", "prez", "width=640,height=480"
+        @window = options.window
         @document = @window.document
         @document.write $("#slides-document").text()
         @document.close()
@@ -60,11 +60,26 @@ $(document).on "click", "#new-window", (e) ->
 $(document).on "click", "#launch", (e) ->
     e.preventDefault()
     return if Prez.current
+    iframe = $("iframe")[0]
 
-    Prez.current = new Prez slideChanged: ($slide, slideNumber) ->
-        notes = $slide.find(".prez-notes").html() || ""
-        $("#slide-notes").html notes
-        $(".current-slide-number").text $slide.data("slide")
+    iframe = if iframe.contentWindow
+        iframe.contentWindow
+    else if iframe.contentDocument.document
+        iframe.contentDocument.document
+    else
+        iframe.contentDocument
+
+    iframePrez = new Prez
+        window: iframe
+        useHash: false
+
+    Prez.current = new Prez
+        window: window.open("", "prez", "width=640,height=480")
+        slideChanged: ($slide, slideNumber) ->
+            notes = $slide.find(".prez-notes").html() || ""
+            $("#slide-notes").html notes
+            $(".current-slide-number").text $slide.data("slide")
+            iframePrez.changeSlideTo slideNumber
 
     $("#pre-launch").hide()
     $("#post-launch").show()

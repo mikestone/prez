@@ -1,5 +1,8 @@
+@import "prez/variables";
+
 body {
-    padding: 40px;
+    margin: 0;
+    padding: $prez-padding;
 }
 
 .header {
@@ -25,7 +28,7 @@ body {
 
 .prez-slide {
     display: none;
-    min-height: 750px;
+    min-height: $prez-slide-min-height;
     text-align: center;
 }
 
