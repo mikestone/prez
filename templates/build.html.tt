@@ -12,33 +12,42 @@
   </head>
 
   <body>
-    <div id="pre-launch">
-      <p>
-        <input type="checkbox" id="new-window" checked="true" /> Launch in new window
-      </p>
+    <div id="container" class="container-fluid">
+      <div id="pre-launch">
+        <div id="filler"></div>
 
-      <p>
-        <button id="launch">Start Presentation</button>
-      </p>
+        <div class="row">
+          <div class="col-xs-6 col-md-offset-2 col-md-4 col-lg-offset-3 col-lg-3">
+            <button id="new-window" type="button" class="btn btn-default btn-block btn-lg active" data-toggle="button">
+              <span class="glyphicon glyphicon-new-window"></span>
+              <span id="launch-message">Launch in new window</span>
+            </button>
+          </div>
 
-      <div id="slides-document" style="display: none;"><%= html_escape @_slide_contents %></div>
-    </div>
+          <div class="col-xs-6 col-md-4 col-lg-3">
+            <button id="launch" class="btn btn-primary btn-block btn-lg">Start Presentation</button>
+          </div>
+        </div>
 
-    <div id="post-launch">
-      <p>
-        <input type="button" class="prev-slide" value="previous" />
-        <input type="button" class="next-slide" value="next" />
-      </p>
+        <div id="slides-document" style="display: none;"><%= html_escape @_slide_contents %></div>
+      </div>
 
-      <p>
-        <input type="button" class="end-prez" value="end presentation" />
-      </p>
+      <div id="post-launch">
+        <p>
+          <input type="button" class="prev-slide" value="previous" />
+          <input type="button" class="next-slide" value="next" />
+        </p>
 
-      <p>
-        Current slide: <span class="current-slide-number"></span>
-      </p>
+        <p>
+          <input type="button" class="end-prez" value="end presentation" />
+        </p>
 
-      <div id="slide-notes">
+        <p>
+          Current slide: <span class="current-slide-number"></span>
+        </p>
+
+        <div id="slide-notes">
+        </div>
       </div>
     </div>
   </body>

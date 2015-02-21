@@ -1,3 +1,11 @@
+html, body, #container, #pre-launch {
+    height: 100%;
+}
+
+#pre-launch #filler {
+    height: 25%;
+}
+
 #post-launch {
     display: none;
 }

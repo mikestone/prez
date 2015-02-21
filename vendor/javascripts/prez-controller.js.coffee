@@ -48,6 +48,24 @@ class Prez
     prevSlide: -> @changeSlideBy -1
     end: -> @window.close()
 
+$(document).on "click", "#new-window", (e) ->
+    return if Prez.current
+
+    callback = =>
+        if $(this).is(".active")
+            $("#new-window #launch-message").text "Launch in new window"
+            $("#new-window .glyphicon").addClass("glyphicon-new-window").removeClass("glyphicon-unchecked")
+        else
+            $("#new-window #launch-message").text "Launch in this window"
+            $("#new-window .glyphicon").removeClass("glyphicon-new-window").addClass("glyphicon-unchecked")
+
+    setTimeout callback, 1
+
+$(document).on "click", "#launch", (e) ->
+    e.preventDefault()
+    return if Prez.current
+    Prez.current = new Prez()
+
 $(document).on "click", ".next-slide", (e) ->
     e.preventDefault()
     Prez.current?.nextSlide()
@@ -59,8 +77,3 @@ $(document).on "click", ".prev-slide", (e) ->
 $(document).on "click", ".end-prez", (e) ->
     e.preventDefault()
     Prez.current?.end()
-
-$(document).on "click", "#launch", (e) ->
-    e.preventDefault()
-    return if Prez.current
-    Prez.current = new Prez()
