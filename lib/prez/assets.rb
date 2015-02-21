@@ -69,7 +69,10 @@ module Prez
       end
 
       def minify(contents)
-        Sass::Engine.new(contents, syntax: :scss, style: :compressed).render
+        Sass::Engine.new(contents,
+                         syntax: :scss,
+                         style: :compressed,
+                         load_paths: [File.expand_path("..", file)]).render
       end
     end
 

@@ -2,6 +2,8 @@
   <head>
     <%= javascript "jquery" %>
     <%= javascript "prez-controller" %>
+    <%= javascript "bootstrap" %>
+    <%= stylesheet "_bootstrap" %>
     <%= stylesheet "prez-controller" %>
   </head>
 
