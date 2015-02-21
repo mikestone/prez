@@ -33,17 +33,22 @@
       </div>
 
       <div id="post-launch">
-        <p>
-          <input type="button" class="prev-slide" value="previous" />
-          <input type="button" class="next-slide" value="next" />
-        </p>
+        <div class="row">
+          <div class="col-xs-2">
+            <button class="prev-slide btn btn-primary btn-block btn-lg"><span class="glyphicon glyphicon-chevron-left"></span></button>
+          </div>
 
-        <p>
-          <input type="button" class="end-prez" value="end presentation" />
-        </p>
+          <div class="col-xs-offset-3 col-xs-2">
+            <button class="end-prez btn btn-danger btn-block btn-lg"><span class="glyphicon glyphicon-remove"></span></button>
+          </div>
 
-        <p>
-          Current slide: <span class="current-slide-number"></span>
+          <div class="col-xs-offset-3 col-xs-2">
+            <button class="next-slide btn btn-primary btn-block btn-lg"><span class="glyphicon glyphicon-chevron-right"></span></button>
+          </div>
+        </div>
+
+        <p class="lead text-center">
+          <strong>Current slide: <span class="current-slide-number"></span></strong>
         </p>
 
         <div id="slide-notes">
