@@ -1,20 +1,18 @@
 class Prez
-    constructor: ->
+    DEFAULT_OPTIONS =
+        useHash: true
+
+    constructor: (options) ->
+        @options = $.extend {}, DEFAULT_OPTIONS, options
         @window = window.open "", "prez", "width=640,height=480"
         @document = @window.document
         @document.write $("#slides-document").text()
+        @document.close()
         @start()
-        $("#pre-launch").hide()
-        $("#post-launch").show()
-
-        $(@window).bind "beforeunload", ->
-            $("#post-launch").hide()
-            $("#pre-launch").show()
-            Prez.current = null
-            return undefined
 
     start: ->
         changeToHashSlide = =>
+            return false unless @options.useHash
             hash = @document.location.hash.replace /^#/, ""
 
             if /^\d+$/.test(hash) && $(".prez-slide[data-slide='#{hash}']", @document).length > 0
@@ -32,16 +30,14 @@ class Prez
         return false if $next.size() == 0
         $(".prez-slide", @document).hide()
         $next.show()
-        notes = $next.find(".prez-notes").html() || ""
-        $("#slide-notes").html notes
-        $(".current-slide-number").text $next.data("slide")
+        @options.slideChanged? $next, nextValue
         true
 
     changeSlideBy: (amount) ->
         current = parseInt $(".prez-slide:visible", @document).data("slide"), 10
         nextValue = current + amount
 
-        if @changeSlideTo(nextValue)
+        if @changeSlideTo(nextValue) && @options.useHash
             @document.location.hash = nextValue
 
     nextSlide: -> @changeSlideBy 1
@@ -64,7 +60,20 @@ $(document).on "click", "#new-window", (e) ->
 $(document).on "click", "#launch", (e) ->
     e.preventDefault()
     return if Prez.current
-    Prez.current = new Prez()
+
+    Prez.current = new Prez slideChanged: ($slide, slideNumber) ->
+        notes = $slide.find(".prez-notes").html() || ""
+        $("#slide-notes").html notes
+        $(".current-slide-number").text $slide.data("slide")
+
+    $("#pre-launch").hide()
+    $("#post-launch").show()
+
+    $(Prez.current.window).bind "beforeunload", ->
+        $("#post-launch").hide()
+        $("#pre-launch").show()
+        Prez.current = null
+        return undefined
 
 $(document).on "click", ".next-slide", (e) ->
     e.preventDefault()
