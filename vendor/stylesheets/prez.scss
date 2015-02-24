@@ -22,18 +22,22 @@ body {
     font-weight: bold;
 }
 
-.prez-slide, .prez-slide input {
-    font-size: 50;
-}
-
 .prez-slide {
+    &, & input {
+        font-size: 50;
+    }
+
     display: none;
     min-height: $prez-slide-min-height;
     text-align: center;
-}
 
-.prez-slide.left-aligned {
-    text-align: left;
+    &.left-aligned {
+        text-align: left;
+    }
+
+    &.right-aligned {
+        text-align: right;
+    }
 }
 
 .smaller {

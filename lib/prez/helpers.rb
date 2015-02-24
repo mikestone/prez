@@ -10,8 +10,22 @@ module Prez
       CGI.escape_html value
     end
 
-    def slide
-      concat %{<div class="prez-slide">}
+    def slide(options = {})
+      classes = ["prez-slide"]
+      align = options.fetch :align, :center
+
+      case align
+      when :left
+        classes << "left-aligned"
+      when :right
+        classes << "right-aligned"
+      when :center
+        # Nothing needed
+      else
+        raise Prez::Error.new("Invalid slide align: #{align.inspect}")
+      end
+
+      concat %{<div class="#{classes.join " "}">}
       yield
       concat %{</div>}
     end

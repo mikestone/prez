@@ -52,6 +52,19 @@ without creating the HTML file:
 <% end %>
 ```
 
+By default, slides are center aligned.  To left or right align, you
+may provide it as an option to the slide method:
+
+```erb
+<% slide align: :right do %>
+  ...
+<% end %>
+
+<% slide align: :left do %>
+  ...
+<% end %>
+```
+
 ### Include custom JS or CSS
 
 ```erb
