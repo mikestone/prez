@@ -48,7 +48,7 @@
         </div>
 
         <p class="lead text-center">
-          <strong>Current slide: <span class="current-slide-number"></span></strong>
+          <strong>Current slide: <span class="current-slide-number"></span> of <span class="total-slides"></span></strong>
         </p>
 
         <iframe id="preview-frame"></iframe>

@@ -104,6 +104,7 @@ $(document).on "click", "#launch", (e) ->
             $(".current-slide-number").text $slide.data("slide")
             iframePrez.changeSlideTo slideNumber
 
+    $(".total-slides").text $(".prez-slide", Prez.current.document).size()
     $("#pre-launch").hide()
     $("#post-launch").show()
 
