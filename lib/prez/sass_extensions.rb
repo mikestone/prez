@@ -1,4 +1,4 @@
-require "base64"
+require "prez/data_uri"
 require "prez/error"
 require "prez/files"
 require "sass"
@@ -7,8 +7,7 @@ module Sass::Script::Functions
   def twbs_font_path(path)
     assert_type path, :String
     path = path.value.sub /[?#].*/, ""
-    font_data = Base64.encode64 Prez::Files.contents(path, "font")
-    font_data.gsub! "\n", ""
+    contents = Prez::Files.contents path, "font"
     extension = path[/\.([^.]*)$/, 1]
 
     case extension
@@ -26,7 +25,7 @@ module Sass::Script::Functions
       raise Prez::Error.new("Unknown font extension '#{extension}'")
     end
 
-    Sass::Script::Value::String.new("data:#{font_type};base64,#{font_data}")
+    Sass::Script::Value::String.new Prez::DataUri.new(font_type, contents).to_s
   rescue Prez::Files::MissingError => e
     raise Prez::Error.new("Could not find font: '#{path}'")
   end

@@ -1,4 +1,6 @@
 require "coffee-script"
+require "prez/data_uri"
+require "prez/error"
 require "prez/files"
 require "prez/sass_extensions"
 require "sass"
@@ -7,17 +9,21 @@ require "uglifier"
 module Prez
   module Assets
     class Tagged
-      attr_reader :name, :contents, :file
+      attr_reader :name, :contents, :file, :options
 
       def initialize(name, options = {})
         @name = name
         @contents = Prez::Files.contents name, extension
         @file = Prez::Files.find name, extension
-        @dev = options.fetch :dev, false
+        @options = options
       end
 
       def dev?
-        @dev
+        options.fetch :dev, false
+      end
+
+      def self_closing?
+        false
       end
 
       def minified_contents
@@ -29,11 +35,62 @@ module Prez
       end
 
       def to_tag
-        if dev?
+        if dev? && !self_closing?
           "#{open}\n#{contents}#{close}"
         else
           "#{open}#{minified_contents.strip}#{close}"
         end
+      end
+    end
+
+    class Image < Prez::Assets::Tagged
+      def self_closing?
+        true
+      end
+
+      def extension
+        "image"
+      end
+
+      def open
+        attributes = []
+
+        if options[:width]
+          attributes << %{width="#{options[:width]}"}
+        end
+
+        if options[:height]
+          attributes << %{height="#{options[:height]}"}
+        end
+
+        %{<img #{attributes.join " "} src="}
+      end
+
+      def close
+        %{" />}
+      end
+
+      def image_type
+        extension = file[/\.([^.]*)$/, 1]
+
+        case extension
+        when "gif"
+          "image/gif"
+        when "jpeg", "jpg"
+          "image/jpeg"
+        when "png"
+          "image/png"
+        when "svg"
+          "image/svg+xml"
+        when "tif", "tiff"
+          "image/tiff"
+        else
+          raise Prez::Error.new("Unknown image extension '#{extension}'")
+        end
+      end
+
+      def minify(contents)
+        Prez::DataUri.new(image_type, contents).to_s
       end
     end
 
@@ -78,6 +135,10 @@ module Prez
     end
 
     class << self
+      def image(name, options = {})
+        Prez::Assets::Image.new(name, options).to_tag
+      end
+
       def javascript(name, options = {})
         Prez::Assets::Javascript.new(name, options).to_tag
       end

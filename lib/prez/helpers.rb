@@ -22,6 +22,12 @@ module Prez
       concat %{</div>}
     end
 
+    def image(name, options = {})
+      Prez::Assets.image name, options
+    rescue Prez::Files::MissingError
+      raise Prez::Error.new("Could not find image file: '#{name}'")
+    end
+
     def javascript(name)
       Prez::Assets.javascript name
     rescue Prez::Files::MissingError
