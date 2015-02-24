@@ -60,6 +60,11 @@ $(document).on "click", "#new-window", (e) ->
 $(document).on "click", "#launch", (e) ->
     e.preventDefault()
     return if Prez.current
+
+    unless $("#new-window").is(".active")
+        $("#in-window-not-implemented-modal").modal "show"
+        return
+
     iframe = $("iframe")[0]
 
     iframe = if iframe.contentWindow
@@ -101,3 +106,6 @@ $(document).on "click", ".prev-slide", (e) ->
 $(document).on "click", ".end-prez", (e) ->
     e.preventDefault()
     Prez.current?.end()
+
+$ ->
+    $("#in-window-not-implemented-modal").modal show: false
