@@ -24,6 +24,7 @@ class Prez
         $(".prez-slide", @document).each (i) -> $(@).attr "data-slide", "#{i + 1}"
         @changeSlideTo 1 unless changeToHashSlide()
         $(@window).on "hashchange", changeToHashSlide
+        $(@document).on "keydown", Prez.handlers.keyDown
 
     changeSlideTo: (nextValue) ->
         $next = $ ".prez-slide[data-slide='#{nextValue}']", @document
@@ -43,6 +44,21 @@ class Prez
     nextSlide: -> @changeSlideBy 1
     prevSlide: -> @changeSlideBy -1
     end: -> @window.close()
+
+    KEY_LEFT = 37
+    KEY_RIGHT = 39
+
+    @handlers:
+        keyDown: (e) ->
+            return if $(e.target).is("input, textarea, select, option")
+
+            switch e.which
+                when KEY_LEFT
+                    e.preventDefault()
+                    Prez.current?.prevSlide()
+                when KEY_RIGHT
+                    e.preventDefault()
+                    Prez.current?.nextSlide()
 
 $(document).on "click", "#new-window", (e) ->
     return if Prez.current
@@ -106,6 +122,8 @@ $(document).on "click", ".prev-slide", (e) ->
 $(document).on "click", ".end-prez", (e) ->
     e.preventDefault()
     Prez.current?.end()
+
+$(document).on "keydown", Prez.handlers.keyDown
 
 $ ->
     $("#in-window-not-implemented-modal").modal show: false
