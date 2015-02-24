@@ -10,12 +10,28 @@ html, body, #container, #pre-launch, #post-launch {
 
 #post-launch {
     display: none;
-}
 
-#post-launch iframe {
-    display: block;
-    height: 50%;
-    margin: 0 auto;
-    min-height: $prez-slide-min-height + (2 * $prez-padding);
-    width: 80%;
+    iframe {
+        display: block;
+        position: absolute;
+        height: 100%;
+        margin: 0 auto;
+        margin-left: (100% - percentage($prez-frame-scale)) / 2;
+        width: 100%;
+        -ms-zoom: $prez-frame-scale;
+        -moz-transform: scale($prez-frame-scale);
+        -moz-transform-origin: 0 0;
+        -o-transform: scale($prez-frame-scale);
+        -o-transform-origin: 0 0;
+        -webkit-transform: scale($prez-frame-scale);
+        -webkit-transform-origin: 0 0;
+    }
+
+    #preview-frame-padding {
+        height: percentage($prez-frame-scale);
+    }
+
+    #slide-notes {
+        margin-top: 15px;
+    }
 }
