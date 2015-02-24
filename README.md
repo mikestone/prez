@@ -52,8 +52,10 @@ without creating the HTML file:
 <% end %>
 ```
 
+### Slide horizontal alignment
+
 By default, slides are center aligned.  To left or right align, you
-may provide it as an option to the slide method:
+may provide it as an option to the <code>slide</code> method:
 
 ```erb
 <% slide align: :right do %>
@@ -64,6 +66,45 @@ may provide it as an option to the slide method:
   ...
 <% end %>
 ```
+
+### Presentation timing
+
+```erb
+<% duration 300 %>
+```
+
+You can indicate how much time your presentation should take using the
+<code>duration</code> helper.  It accepts either the number of seconds
+for the total presentation, or a string representation of the form
+hours:minutes:seconds.  For example, <code>"2:30:00"</code> would
+represent 2 hours and 30 minutes.
+
+Before you start your presentation, you can adjust the amount for the
+current run.  During your presentation, the time will be displayed in
+the upper left corner.  If you are running low on time, the remaining
+time will turn red and flash.  Once you are over, the time will stay
+solid red and start to count up.
+
+### Slide timing
+
+Each slide will have a time limit based on the total duration provided
+in the upper right corner.  It is simply the total time remaining
+divided by the remaining slides, ignoring slides that have specific
+timing specified.
+
+Specific timing can be provided to a slide via the
+<code>duration</code> option in the slide method.  It accepts the
+amount of seconds as a number.
+
+```erb
+<% slide duration: 15 do %>
+  ...
+<% end %>
+```
+
+Like the total duration, the slide duration will begin to flash red
+when it is running out, and it will stay solid red and count up when
+you are over.
 
 ### Include custom JS or CSS
 
