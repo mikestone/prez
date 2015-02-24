@@ -51,7 +51,7 @@ module Prez
         "js" => Prez::Files::Paths.new("js", ["js.coffee", "coffee", "js"], "javascripts"),
         "css" => Prez::Files::Paths.new("css", ["css.scss", "scss", "css"], "stylesheets"),
         "font" => Prez::Files::Paths.new("font", ["eot", "svg", "ttf", "woff", "woff2"], "fonts", binary: true),
-        "image" => Prez::Files::Paths.new("font", ["gif", "jpeg", "jpg", "png", "svg", "tif", "tiff"], "images", binary: true)
+        "image" => Prez::Files::Paths.new("image", ["gif", "jpeg", "jpg", "png", "svg", "tif", "tiff"], "images", binary: true)
       }
 
       def contents(name, extension)

@@ -26,6 +26,81 @@ without creating the HTML file:
 
     $ prez start MyPresentation
 
+## Syntax
+
+### Build a new slide
+
+```erb
+<% slide do %>
+  <p>
+    Contents of your slide!
+  </p>
+<% end %>
+```
+
+### Provide notes for your slide
+
+```erb
+<% slide do %>
+  <p>
+    Contents of your slide!
+  </p>
+
+  <% notes do %>
+    These notes show up just for you while presenting this slide.
+  <% end %>
+<% end %>
+```
+
+### Include custom JS or CSS
+
+```erb
+<html>
+  <head>
+    <%= javascript "myCustomScript" %>
+    <%= stylesheet "myCustomStyle" %>
+```
+
+CoffeeScript and Sass are supported.  If the file is first found in
+the current directory, searching will stop.  The next path will be the
+<code>javascripts</code> or <code>stylsheets</code> directory from
+within the current directory depending on which asset you are
+including.  If all those fail, the file will be searched within the
+prez gem itself.  An error will be thrown if the asset cannot be
+found.
+
+You can specify the full file name directly, or let the helper find it
+for you.  For JavaScript, the extensions searched will be (in this
+order): <code>.js.coffee</code>, <code>.coffee</code> and
+<code>.js</code>.  For stylesheets, the extensions will be:
+<code>.css.scss</code>, <code>.scss</code> and <code>.css</code>.
+
+These assets will be minified before inserting them in the resulting
+HTML file.
+
+### Include images
+
+```erb
+<% slide do %>
+  <p>
+    <%= image "myImage" %>
+    <%= image "otherImage.png", width: "50%" %>
+    <%= image "yetAnotherImage.gif", height: "50%" %>
+  </p>
+<% end %>
+```
+
+Like JS and CSS assets, the images will be searched from the current
+directory, then the <code>images</code> directory from within the
+current directory.  Also, the extension is optional and can be one of:
+<code>.gif</code>, <code>.jpeg</code>, <code>.jpg</code>,
+<code>.png</code>, <code>.svg</code>, <code>.tif</code> or
+<code>.tiff</code>.
+
+A <code>width</code> and <code>height</code> option are allowed, which
+will add the respective attribute to the resulting <code>img</code>
+tag.
+
 ## Contributing
 
 1. Fork it ( https://github.com/mikestone/prez/fork )
