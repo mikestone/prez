@@ -45,18 +45,20 @@ class Prez
     prevSlide: -> @changeSlideBy -1
     end: -> @window.close()
 
+    KEY_ENTER = 13
+    KEY_SPACE = 32
     KEY_LEFT = 37
     KEY_RIGHT = 39
 
     @handlers:
         keyDown: (e) ->
-            return if $(e.target).is("input, textarea, select, option")
+            return if $(e.target).is("button, input, textarea, select, option")
 
             switch e.which
                 when KEY_LEFT
                     e.preventDefault()
                     Prez.current?.prevSlide()
-                when KEY_RIGHT
+                when KEY_ENTER, KEY_SPACE, KEY_RIGHT
                     e.preventDefault()
                     Prez.current?.nextSlide()
 
