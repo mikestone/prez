@@ -21,6 +21,11 @@ Modify the resulting template file, and build the final file:
 Copy the file where-ever you want and then run it by opening it in
 your browser!
 
+Alternatively, launch the presentation directly in your browser
+without creating the HTML file:
+
+    $ prez start MyPresentation
+
 ## Contributing
 
 1. Fork it ( https://github.com/mikestone/prez/fork )
