@@ -8,6 +8,8 @@ module Prez
     private
 
     def build_html(filename)
+      say "Generating html..."
+      reset_helpers!
       @_slide_contents = erb_eval filename
       erb_eval File.expand_path("../../../templates/build.html.tt", __FILE__)
     end

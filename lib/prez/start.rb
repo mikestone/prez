@@ -10,6 +10,7 @@ module Prez
     include Thor::Actions
     include Prez::Builder
     argument :name, type: :string
+    class_option :server, type: :boolean, desc: "Keep the server up for dynamic refreshes"
 
     def check_file!
       if File.exists? name
@@ -26,29 +27,60 @@ module Prez
     end
 
     def generate_html
-      say "Generating html..."
+      return if options[:server]
       @html = build_html filename
     end
 
     def start_server
       say "Starting server..."
-      server = WEBrick::HTTPServer.new Port: 0, Logger: Prez::Start::NoopLog.new, AccessLog: []
-      port = server.config[:Port]
+      @server = WEBrick::HTTPServer.new Port: 0, Logger: Prez::Start::NoopLog.new, AccessLog: []
+      port = @server.config[:Port]
 
-      server.mount_proc "/" do |request, response|
-        response.body = @html
-        server.stop
+      if options[:server]
+        ["INT", "TERM"].each do |signal|
+          trap signal do
+            stop_server
+          end
+        end
+      end
+
+      @server.mount_proc "/" do |request, response|
+        if request.path == "/"
+          response.body = html
+
+          unless options[:server]
+            @server.stop
+          end
+        else
+          say "Ignoring reuest: #{request.path}"
+          response.status = 404
+        end
       end
 
       begin
         Launchy.open "http://localhost:#{port}/"
-        server.start
+        @server.start
       ensure
-        server.shutdown
+        unless options[:server]
+          stop_server
+        end
       end
     end
 
     private
+
+    def stop_server
+      say "Shutting down server..."
+      @server.shutdown
+    end
+
+    def html
+      if options[:server]
+        build_html filename
+      else
+        @html
+      end
+    end
 
     def filename
       @filename

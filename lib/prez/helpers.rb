@@ -6,6 +6,10 @@ module Prez
   module Helpers
     protected
 
+    def reset_helpers!
+      @duration = nil
+    end
+
     def duration(value)
       if @duration
         raise Prez::Error.new("The duration helper can only be called once!")
