@@ -284,6 +284,9 @@ $(document).on "click", ".end-prez", (e) ->
     e.preventDefault()
     Prez.current?.end()
 
+$(window).bind "beforeunload", ->
+    Prez.current?.end()
+
 $(document).on "keydown", Prez.handlers.keyDown
 $.setInterval 50, Prez.handlers.timeChange
 
