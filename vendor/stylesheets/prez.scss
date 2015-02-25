@@ -2,7 +2,7 @@
 
 body {
     margin: 0;
-    padding: $prez-padding;
+    padding: 0;
 }
 
 .header {
@@ -29,6 +29,7 @@ body {
 
     display: none;
     min-height: $prez-slide-min-height;
+    padding: $prez-padding;
     text-align: center;
 
     &.left-aligned {

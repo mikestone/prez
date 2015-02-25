@@ -52,7 +52,7 @@ module Prez
             @server.stop
           end
         else
-          say "Ignoring reuest: #{request.path}"
+          say "Ignoring request: #{request.path}"
           response.status = 404
         end
       end

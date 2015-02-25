@@ -52,8 +52,28 @@ module Prez
       end
     end
 
-    def html_escape(value)
-      CGI.escape_html value
+    def html_escape(value = nil, &block)
+      if block
+        value = capture &block
+      end
+
+      value = CGI.escape_html value
+
+      if block
+        concat value
+      else
+        value
+      end
+    end
+
+    def capture()
+      buf = ""
+      old_buffer = @output_buffer
+      @output_buffer = buf
+      yield
+      buf.to_s
+    ensure
+      @output_buffer = old_buffer
     end
 
     def slide(options = {})
