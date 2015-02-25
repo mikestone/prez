@@ -1,4 +1,5 @@
 require "coffee-script"
+require "prez/cache"
 require "prez/data_uri"
 require "prez/error"
 require "prez/files"
@@ -26,8 +27,20 @@ module Prez
         false
       end
 
+      def compiled_contents
+        Prez::Cache.get "asset:#{extension}:compiled:#{file}", contents do
+          compile contents
+        end
+      end
+
+      def compile(contents)
+        contents
+      end
+
       def minified_contents
-        minify contents
+        Prez::Cache.get "asset:#{extension}:minified:#{file}", compiled_contents do
+          minify compiled_contents
+        end
       end
 
       def minify(contents)
@@ -36,7 +49,7 @@ module Prez
 
       def to_tag
         if dev? && !self_closing?
-          "#{open}\n#{contents}#{close}"
+          "#{open}\n#{compiled_contents}#{close}"
         else
           "#{open}#{minified_contents.strip}#{close}"
         end
@@ -89,7 +102,7 @@ module Prez
         end
       end
 
-      def minify(contents)
+      def compile(contents)
         Prez::DataUri.new(image_type, contents).to_s
       end
     end
@@ -107,8 +120,15 @@ module Prez
         %{</script>}
       end
 
+      def compile(contents)
+        if file =~ /\.coffee$/
+          CoffeeScript.compile contents
+        else
+          contents
+        end
+      end
+
       def minify(contents)
-        contents = CoffeeScript.compile contents if file =~ /\.coffee$/
         Uglifier.compile contents
       end
     end
@@ -126,11 +146,18 @@ module Prez
         %{</style>}
       end
 
+      def compile(contents)
+        Sass::Engine.new(contents,
+                         syntax: :scss,
+                         style: :expanded,
+                         load_paths: [File.dirname(file)]).render
+      end
+
       def minify(contents)
         Sass::Engine.new(contents,
                          syntax: :scss,
                          style: :compressed,
-                         load_paths: [File.expand_path("..", file)]).render
+                         load_paths: [File.dirname(file)]).render
       end
     end
 
