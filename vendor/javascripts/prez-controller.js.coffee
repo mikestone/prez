@@ -267,6 +267,8 @@ $(document).on "click", "#launch", (e) ->
             Prez.handlers.timeChange()
             iframePrez.changeSlideTo slideNumber, elementNumber
         beforeStart: (prez) ->
+            $("select.current-slide-number").empty()
+
             for i in [1..prez.countSlides()]
                 $("select.current-slide-number").append """<option value="#{i}">#{i}</option>"""
 
@@ -294,6 +296,7 @@ $(document).on "click", ".end-prez", (e) ->
 
 $(document).on "change", "select.current-slide-number", (e) ->
     Prez.current?.changeSlideTo parseInt($(@).val(), 10)
+    $(@).blur()
 
 $(window).bind "beforeunload", ->
     Prez.current?.end()
