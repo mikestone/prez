@@ -134,7 +134,22 @@ class Prez
         timeChange: ->
             return unless Prez.current
             $(".prez-total-duration").text Prez.current.remainingPresentationTime()
+            seconds = Prez.current.remainingPresentationSeconds()
+            $(".prez-total-duration").toggleClass("prez-danger-time", seconds <= 60 && seconds >= 0)
+            $(".prez-total-duration").toggleClass("prez-over-time", seconds < 0)
             $(".prez-current-slide-duration").text Prez.current.remainingSlideTime()
+            seconds = Prez.current.remainingSlideSeconds()
+            $(".prez-current-slide-duration").toggleClass("prez-danger-time", seconds <= 3 && seconds >= 0)
+            $(".prez-current-slide-duration").toggleClass("prez-over-time", seconds < 0)
+
+            if Math.floor(Date.now() / 250) % 2 == 0
+                $(".prez-danger-time").hide()
+            else
+                $(".prez-danger-time").show()
+
+            # Ensure transitions stay shown
+            $(".prez-total-duration:not(.prez-danger-time)").show()
+            $(".prez-current-slide-duration:not(.prez-danger-time)").show()
 
 $(document).on "click", "#new-window", (e) ->
     return if Prez.current

@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <%= stylesheet "bootstrap" %>
     <%= stylesheet "prez-controller" %>
     <%= javascript "jquery" %>
     <%= javascript "prez-controller" %>
@@ -58,7 +57,7 @@
 
         <div class="row">
           <div class="col-xs-2">
-            <div class="lead">
+            <div>
               <span class="prez-total-duration"></span>
             </div>
           </div>
@@ -70,7 +69,7 @@
           </div>
 
           <div class="col-xs-2">
-            <div class="lead text-right">
+            <div class="text-right">
               <span class="prez-current-slide-duration"></span>
             </div>
           </div>

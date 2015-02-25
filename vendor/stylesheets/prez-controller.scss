@@ -1,3 +1,5 @@
+$bootstrap-sass-asset-helper: true;
+@import "bootstrap";
 @import "prez/variables";
 
 html, body, #container, #pre-launch, #post-launch {
@@ -10,6 +12,15 @@ html, body, #container, #pre-launch, #post-launch {
 
 #post-launch {
     display: none;
+
+    .prez-total-duration, .prez-current-slide-duration {
+        font-size: 2em;
+    }
+
+    .prez-danger-time, .prez-over-time {
+        font-weight: bold;
+        color: $brand-danger;
+    }
 
     iframe {
         display: block;
