@@ -56,9 +56,25 @@
           </div>
         </div>
 
-        <p class="lead text-center">
-          <strong>Current slide: <span class="current-slide-number"></span> of <span class="total-slides"></span></strong>
-        </p>
+        <div class="row">
+          <div class="col-xs-2">
+            <div class="lead">
+              <span class="prez-total-duration"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-8">
+            <p class="lead text-center">
+              <strong>Current slide: <span class="current-slide-number"></span> of <span class="total-slides"></span></strong>
+            </p>
+          </div>
+
+          <div class="col-xs-2">
+            <div class="lead text-right">
+              <span class="prez-current-slide-duration"></span>
+            </div>
+          </div>
+        </div>
 
         <iframe id="preview-frame"></iframe>
         <div id="preview-frame-padding"></div>

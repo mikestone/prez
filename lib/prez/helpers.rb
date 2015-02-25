@@ -29,7 +29,7 @@ module Prez
         @duration.map! &:to_i
         value = @duration.pop || 0
         value += (@duration.pop || 0) * 60
-        value += (@duration.pop || 0) * 60
+        value += (@duration.pop || 0) * 60 * 60
         @duration = value
       end
 
@@ -67,7 +67,11 @@ module Prez
         raise Prez::Error.new("Invalid slide align: #{align.inspect}")
       end
 
-      concat %{<div class="#{classes.join " "}">}
+      if options[:duration]
+        duration_attribute = %{ data-duration="#{options[:duration]}"}
+      end
+
+      concat %{<div class="#{classes.join " "}"#{duration_attribute}>}
       yield
       concat %{</div>}
     end
