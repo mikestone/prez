@@ -22,6 +22,12 @@ html, body, #container, #pre-launch, #post-launch {
         color: $brand-danger;
     }
 
+    select.current-slide-number {
+        display: inherit;
+        margin-top: 15px;
+        width: inherit;
+    }
+
     iframe {
         display: block;
         position: absolute;

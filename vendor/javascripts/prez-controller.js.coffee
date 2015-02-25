@@ -16,6 +16,7 @@ class Prez
         @document = @window.document
         @document.write $("#slides-document").text()
         @document.close()
+        @options.beforeStart?(@)
         @start()
 
     start: ->
@@ -105,6 +106,9 @@ class Prez
         $slide = $(".prez-slide[data-slide='#{slide}']", @document)
         return 0 if $slide.size() == 0
         $slide.find(".prez-element").size()
+
+    countSlides: ->
+        $(".prez-slide", @document).size()
 
     changeSlideBy: (amount) ->
         slide = @currentSlide()
@@ -258,11 +262,15 @@ $(document).on "click", "#launch", (e) ->
         slideChanged: ($slide, slideNumber, elementNumber) ->
             notes = $slide.find(".prez-notes").html() || ""
             $("#slide-notes").html notes
-            $(".current-slide-number").text $slide.data("slide")
+            $(".current-slide-number:not(select)").text $slide.data("slide")
+            $("select.current-slide-number").val $slide.data("slide")
             Prez.handlers.timeChange()
             iframePrez.changeSlideTo slideNumber, elementNumber
+        beforeStart: (prez) ->
+            for i in [1..prez.countSlides()]
+                $("select.current-slide-number").append """<option value="#{i}">#{i}</option>"""
 
-    $(".total-slides").text $(".prez-slide", Prez.current.document).size()
+    $(".total-slides").text Prez.current.countSlides()
     $("#pre-launch").hide()
     $("#post-launch").show()
 
@@ -283,6 +291,9 @@ $(document).on "click", ".prev-slide", (e) ->
 $(document).on "click", ".end-prez", (e) ->
     e.preventDefault()
     Prez.current?.end()
+
+$(document).on "change", "select.current-slide-number", (e) ->
+    Prez.current?.changeSlideTo parseInt($(@).val(), 10)
 
 $(window).bind "beforeunload", ->
     Prez.current?.end()

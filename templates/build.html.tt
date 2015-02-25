@@ -64,7 +64,7 @@
 
           <div class="col-xs-8">
             <p class="lead text-center">
-              <strong>Current slide: <span class="current-slide-number"></span> of <span class="total-slides"></span></strong>
+              <strong>Current slide: <select class="form-control current-slide-number"></select> of <span class="total-slides"></span></strong>
             </p>
           </div>
 
