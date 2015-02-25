@@ -39,8 +39,12 @@ body {
         text-align: right;
     }
 
-    .prez-element {
+    .prez-element.hide-style.hidden {
         display: none;
+    }
+
+    .prez-element.opacity-style.hidden {
+        opacity: 0.25;
     }
 }
 

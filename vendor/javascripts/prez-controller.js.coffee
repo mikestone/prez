@@ -8,6 +8,7 @@ class Prez
     DEFAULT_OPTIONS =
         useHash: true
         duration: 0
+        slideElementStyle: "hide"
 
     constructor: (options) ->
         @options = $.extend {}, DEFAULT_OPTIONS, options
@@ -37,11 +38,14 @@ class Prez
 
             false
 
+        slideElementClass = "#{@options.slideElementStyle}-style"
+
         $(".prez-slide", @document).each (i) ->
             $(@).attr "data-slide", "#{i + 1}"
 
             $(@).find(".prez-element").each (j) ->
                 $(@).attr "data-slide-element", "#{j + 1}"
+                $(@).addClass("hidden #{slideElementClass}")
 
         @startTime = Date.now()
         @changeSlideTo 1 unless changeToHashSlide()
@@ -72,13 +76,18 @@ class Prez
             @slideStarted $next
 
         if nextElement == 0
-            $next.find(".prez-element").hide()
+            $next.find(".prez-element").addClass("hidden").removeClass("visible")
         else if @currentElement() > nextElement
             for i in [@currentElement()..(nextElement + 1)]
-                $next.find(".prez-element[data-slide-element='#{i}']").hide()
+                $next.find(".prez-element[data-slide-element='#{i}']").addClass("hidden").removeClass("visible")
         else if @currentElement() < nextElement
             for i in [(@currentElement() + 1)..nextElement]
-                $next.find(".prez-element[data-slide-element='#{i}']").show()
+                $next.find(".prez-element[data-slide-element='#{i}']").removeClass("hidden").addClass("visible")
+
+        # Hack to fix Chrome sometimes not rendering opacity changes,
+        # thanks to http://stackoverflow.com/a/8840703/122
+        if @options.slideElementStyle == "opacity"
+            $next.hide().show(0)
 
         @options.slideChanged? $next, nextValue, nextElement
         true
@@ -89,8 +98,8 @@ class Prez
 
     currentElement: ->
         return null if @currentSlide() == null
-        return 0 if $(".prez-element:visible", @document).size() == 0
-        parseInt $(".prez-element:visible:last", @document).data("slide-element"), 10
+        return 0 if $(".prez-slide:visible .prez-element.visible", @document).size() == 0
+        parseInt $(".prez-slide:visible .prez-element.visible:last", @document).data("slide-element"), 10
 
     countSlideElements: (slide) ->
         $slide = $(".prez-slide[data-slide='#{slide}']", @document)
@@ -241,6 +250,7 @@ $(document).on "click", "#launch", (e) ->
     iframePrez = new Prez
         window: iframe
         useHash: false
+        slideElementStyle: "opacity"
 
     Prez.current = new Prez
         duration: Prez.timeToSeconds($("#prez-duration").val())
