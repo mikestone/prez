@@ -21,45 +21,104 @@ class Prez
         changeToHashSlide = =>
             return false unless @options.useHash
             hash = @document.location.hash.replace /^#/, ""
+            match = /^(\d+)-(\d+)$/.exec hash
 
-            if /^\d+$/.test(hash) && $(".prez-slide[data-slide='#{hash}']", @document).length > 0
-                @changeSlideTo hash
-                true
-            else
-                false
+            if match
+                slide = parseInt match[1], 10
+                element = parseInt match[2], 10
+                selector = ".prez-slide[data-slide='#{slide}']"
 
-        $(".prez-slide", @document).each (i) -> $(@).attr "data-slide", "#{i + 1}"
+                if element > 0
+                    selector = "#{selector} .prez-element[data-slide-element='#{element}']"
+
+                if $(selector, @document).length > 0
+                    @changeSlideTo slide, element
+                    return true
+
+            false
+
+        $(".prez-slide", @document).each (i) ->
+            $(@).attr "data-slide", "#{i + 1}"
+
+            $(@).find(".prez-element").each (j) ->
+                $(@).attr "data-slide-element", "#{j + 1}"
+
         @startTime = Date.now()
         @changeSlideTo 1 unless changeToHashSlide()
         $(@window).on "hashchange", changeToHashSlide
         $(@document).on "keydown", Prez.handlers.keyDown
 
-    changeSlideTo: (nextValue) ->
-        $next = $ ".prez-slide[data-slide='#{nextValue}']", @document
-        return false if $next.size() == 0
-        $(".prez-slide", @document).hide()
-        $next.show()
+
+    slideStarted: ($slide) ->
         @slideStartTime = Date.now()
-        @slideDuration = $next.slideDuration()
+        @slideDuration = $slide.slideDuration()
 
         # When unspecified, the slide duration is an even amount based
         # on the remaining slides that don't have a specific duration
         if @slideDuration <= 0
-            $remainingUntimed = $next.nextAll(".prez-slide").filter -> $(@).slideDuration() <= 0
+            $remainingUntimed = $slide.nextAll(".prez-slide").filter -> $(@).slideDuration() <= 0
             @slideDuration = @remainingPresentationSeconds() / ($remainingUntimed.size() + 1)
 
             if @slideDuration < 0
                 @slideDuration = 0
 
-        @options.slideChanged? $next, nextValue
+    changeSlideTo: (nextValue, nextElement = 0) ->
+        $next = $ ".prez-slide[data-slide='#{nextValue}']", @document
+        return false if $next.size() == 0
+
+        if nextValue != @currentSlide()
+            $(".prez-slide", @document).hide()
+            $next.show()
+            @slideStarted $next
+
+        if nextElement == 0
+            $next.find(".prez-element").hide()
+        else if @currentElement() > nextElement
+            for i in [@currentElement()..(nextElement + 1)]
+                $next.find(".prez-element[data-slide-element='#{i}']").hide()
+        else if @currentElement() < nextElement
+            for i in [(@currentElement() + 1)..nextElement]
+                $next.find(".prez-element[data-slide-element='#{i}']").show()
+
+        @options.slideChanged? $next, nextValue, nextElement
         true
 
-    changeSlideBy: (amount) ->
-        current = parseInt $(".prez-slide:visible", @document).data("slide"), 10
-        nextValue = current + amount
+    currentSlide: ->
+        return null if $(".prez-slide:visible", @document).size() == 0
+        parseInt $(".prez-slide:visible", @document).data("slide"), 10
 
-        if @changeSlideTo(nextValue) && @options.useHash
-            @document.location.hash = nextValue
+    currentElement: ->
+        return null if @currentSlide() == null
+        return 0 if $(".prez-element:visible", @document).size() == 0
+        parseInt $(".prez-element:visible:last", @document).data("slide-element"), 10
+
+    countSlideElements: (slide) ->
+        $slide = $(".prez-slide[data-slide='#{slide}']", @document)
+        return 0 if $slide.size() == 0
+        $slide.find(".prez-element").size()
+
+    changeSlideBy: (amount) ->
+        slide = @currentSlide()
+        element = @currentElement()
+        nextSlide = slide
+        nextElement = element
+
+        for _ in [1..Math.abs(amount)]
+            if amount > 0
+                if nextElement >= @countSlideElements(nextSlide)
+                    nextSlide++
+                    nextElement = 0
+                else
+                    nextElement++
+            else
+                if nextElement <= 0
+                    nextSlide--
+                    nextElement = @countSlideElements nextSlide
+                else
+                    nextElement--
+
+        if @changeSlideTo(nextSlide, nextElement) && @options.useHash
+            @document.location.hash = "#{nextSlide}-#{nextElement}"
 
     nextSlide: -> @changeSlideBy 1
     prevSlide: -> @changeSlideBy -1
@@ -186,12 +245,12 @@ $(document).on "click", "#launch", (e) ->
     Prez.current = new Prez
         duration: Prez.timeToSeconds($("#prez-duration").val())
         window: window.open("", "prez", "width=640,height=480")
-        slideChanged: ($slide, slideNumber) ->
+        slideChanged: ($slide, slideNumber, elementNumber) ->
             notes = $slide.find(".prez-notes").html() || ""
             $("#slide-notes").html notes
             $(".current-slide-number").text $slide.data("slide")
             Prez.handlers.timeChange()
-            iframePrez.changeSlideTo slideNumber
+            iframePrez.changeSlideTo slideNumber, elementNumber
 
     $(".total-slides").text $(".prez-slide", Prez.current.document).size()
     $("#pre-launch").hide()

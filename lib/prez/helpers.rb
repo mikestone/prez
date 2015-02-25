@@ -76,6 +76,13 @@ module Prez
       concat %{</div>}
     end
 
+    def element(options = {})
+      tag = options.fetch :tag, :div
+      concat %{<#{tag} class="prez-element">}
+      yield
+      concat %{</#{tag}>}
+    end
+
     def notes
       concat %{<div class="prez-notes">}
       yield

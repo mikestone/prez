@@ -52,6 +52,58 @@ without creating the HTML file:
 <% end %>
 ```
 
+### Add extra slide elements
+
+```erb
+<% slide do %>
+  <p>
+    Contents of your slide!
+  </p>
+
+  <% element do %>
+    <p>
+      A second slide element.
+    </p>
+  <% end %>
+
+  <% element do %>
+    <p>
+      A third slide element.
+    </p>
+  <% end %>
+<% end %>
+```
+
+Slide elements are pieces of a bigger slide that show up when you
+advance to the next slide, but before actually moving to the next
+slide.  The slide will not continue until all elements are shown.
+
+By default, slide elements are represented as divs.  You can change
+the tag that is used by providing it in the <code>tag</code> option,
+or just embed the element directly and use the
+<code>prez-element</code> class.
+
+```erb
+<% slide do %>
+  <ul>
+    <li>
+      First element
+    </li>
+
+    <% element tag: :li do %>
+      Second element
+    <% end %>
+
+    <li class="prez-element">
+      Third element
+    </li>
+  </ul>
+<% end %>
+```
+
+Note that all elements are always hidden when a slide first appears.
+Any content you want displayed should not be contained in an element.
+
 ### Slide horizontal alignment
 
 By default, slides are center aligned.  To left or right align, you
