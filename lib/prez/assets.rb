@@ -76,6 +76,10 @@ module Prez
           attributes << %{height="#{options[:height]}"}
         end
 
+        if options[:style]
+          attributes << %{style="#{options[:style]}"}
+        end
+
         %{<img #{attributes.join " "} src="}
       end
 
