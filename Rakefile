@@ -13,7 +13,7 @@ gem "sass", "#{Prez::Gem.dependencies[:sass]}"
 gem "therubyracer", "#{Prez::Gem.dependencies[:therubyracer]}"
 gem "thor", "#{Prez::Gem.dependencies[:thor]}"
 gem "uglifier", "#{Prez::Gem.dependencies[:uglifier]}"
-require "prez/cli"
+require "prez"
 Prez::CLI.start
 }
 end

@@ -1,6 +1,3 @@
-require "prez/data_uri"
-require "prez/error"
-require "prez/files"
 require "sass"
 
 module Sass::Script::Functions

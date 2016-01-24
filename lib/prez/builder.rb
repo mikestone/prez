@@ -1,5 +1,4 @@
 require "erb"
-require "prez/helpers"
 
 module Prez
   module Builder

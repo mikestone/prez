@@ -1,6 +1,4 @@
 require "cgi"
-require "prez/assets"
-require "prez/error"
 
 module Prez
   module Helpers

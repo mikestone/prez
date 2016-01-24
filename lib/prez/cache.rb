@@ -1,6 +1,5 @@
 require "digest"
 require "fileutils"
-require "prez/version"
 require "yaml"
 
 module Prez

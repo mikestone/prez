@@ -1,8 +1,4 @@
 require "coffee-script"
-require "prez/cache"
-require "prez/data_uri"
-require "prez/error"
-require "prez/files"
 require "prez/sass_extensions"
 require "sass"
 require "uglifier"

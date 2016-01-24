@@ -1,4 +1,3 @@
-require "prez/error"
 require "thor/actions"
 require "thor/group"
 

@@ -1,6 +1,4 @@
 require "launchy"
-require "prez/builder"
-require "prez/error"
 require "thor/actions"
 require "thor/group"
 require "webrick"

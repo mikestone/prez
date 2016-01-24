@@ -1,7 +1,3 @@
-require "prez/build"
-require "prez/new"
-require "prez/start"
-require "prez/version"
 require "thor"
 
 module Prez
