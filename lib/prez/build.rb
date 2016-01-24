@@ -5,19 +5,19 @@ module Prez
   class Build < Thor::Group
     include Thor::Actions
     include Prez::Builder
-    argument :name, type: :string
+    argument :name, type: :string, required: false, default: nil
 
     def check_file!
-      if File.exists? name
-        @filename = name
-      elsif File.exists? "#{name}.prez"
-        @filename = "#{name}.prez"
+      if File.exists? prez_name
+        @filename = prez_name
+      elsif File.exists? "#{prez_name}.prez"
+        @filename = "#{prez_name}.prez"
       else
-        raise Prez::Error.new("Missing prez file '#{name}'")
+        raise Prez::Error.new("Missing prez file '#{prez_name}'")
       end
 
       if filename =~ /\.html$/
-        raise Prez::Error.new("Prez file cannot be an html file: '#{name}'")
+        raise Prez::Error.new("Prez file cannot be an html file: '#{prez_name}'")
       end
     end
 
@@ -26,6 +26,22 @@ module Prez
     end
 
     private
+
+    def prez_name
+      @prez_name = name || only_existing_prez
+    end
+
+    def only_existing_prez
+      results = Dir.glob "*.prez"
+
+      if results.empty?
+        raise Prez::Error.new("No .prez files found!")
+      elsif results.size > 1
+        raise Prez::Error.new("More than one .prez file found!\nPlease specify which one you want to build.")
+      end
+
+      results.first
+    end
 
     def base_name
       filename.sub /\.prez$/, ""
