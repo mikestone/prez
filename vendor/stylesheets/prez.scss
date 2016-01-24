@@ -32,11 +32,19 @@ body {
     padding: $prez-padding;
     text-align: center;
 
-    &.left-aligned {
+    .center-aligned {
+        text-align: center;
+    }
+
+    &.left-aligned, .left-aligned {
         text-align: left;
     }
 
-    &.right-aligned {
+    .left-aligned {
+        padding-left: 5%;
+    }
+
+    &.right-aligned, .right-aligned {
         text-align: right;
     }
 
@@ -49,8 +57,35 @@ body {
     }
 }
 
-.smaller {
+.pre {
+    font-family: monospace;
+    font-size: 0.9em;
+    white-space: pre;
+}
+
+.smaller, .smaller.pre {
     font-size: 0.7em;
+}
+
+.biggest {
+    font-size: 5.0em;
+}
+
+
+.red-background {
+    background-color: #ffcccc;
+}
+
+.green-background {
+    background-color: #ccffcc;
+}
+
+.blue-background {
+    background-color: #ccccff;
+}
+
+.emphasize {
+    font-weight: bold;
 }
 
 dt {
