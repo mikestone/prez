@@ -245,6 +245,11 @@ $(document).on "click", "#new-window", (e) ->
             $("#new-window #launch-message").text "Launch in this window"
             $("#new-window .glyphicon").removeClass("glyphicon-new-window").addClass("glyphicon-unchecked")
 
+$(document).on "click", "#launch-after-blocked", (e) ->
+    e.preventDefault()
+    $("#new-window-popup-blocked-modal").modal "hide"
+    $("#launch").click()
+
 $(document).on "click", "#launch", (e) ->
     e.preventDefault()
     return if Prez.current
@@ -261,6 +266,12 @@ $(document).on "click", "#launch", (e) ->
 
 
     if useNewWindow
+        newWindow = window.open("", "prez", "width=640,height=480")
+
+        unless newWindow
+            $("#new-window-popup-blocked-modal").modal "show"
+            return
+
         iframePrez = new Prez
             window: iframe.getFrameWindow()
             useHash: false
@@ -268,7 +279,7 @@ $(document).on "click", "#launch", (e) ->
 
         Prez.current = new Prez
             duration: Prez.timeToSeconds($("#prez-duration").val())
-            window: window.open("", "prez", "width=640,height=480")
+            window: newWindow
             slideChanged: ($slide, slideNumber, elementNumber) ->
                 notes = $slide.find(".prez-notes").html() || ""
                 $("#slide-notes").html notes
@@ -329,3 +340,13 @@ $(window).bind "beforeunload", ->
 
 $(document).on "keydown", Prez.handlers.keyDown
 $.setInterval 50, Prez.handlers.timeChange
+
+$ ->
+    launchType = $("html").data("launch-type")
+
+    if launchType == "new_window"
+        $("#new-window").addClass("active");
+        $("#launch").click()
+    else if launchType == "current_window"
+        $("#new-window").removeClass("active");
+        $("#launch").click()

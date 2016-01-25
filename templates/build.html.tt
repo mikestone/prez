@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-launch-type="<%= launch_type %>">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -81,6 +81,29 @@
         <div class="row">
           <div class="col-xs-offset-2 col-xs-8">
             <div id="slide-notes" class="lead">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="new-window-popup-blocked-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="popup-blocked" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="popup-blocked">Popup Blocked</h4>
+            </div>
+
+            <div class="modal-body">
+              <p>
+                Sorry, but your new presentation was blocked! Please click
+                'Launch' to try again, or just dismiss this modal.
+              </p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="launch-after-blocked">Launch</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>

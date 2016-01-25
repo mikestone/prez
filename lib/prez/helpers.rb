@@ -5,6 +5,7 @@ module Prez
     protected
 
     def reset_helpers!
+      @launch = :choose
       @duration = nil
     end
 
@@ -48,6 +49,18 @@ module Prez
       else
         seconds.to_s
       end
+    end
+
+    def launch(new_window: true)
+      if new_window
+        @launch = :new_window
+      else
+        @launch = :current_window
+      end
+    end
+
+    def launch_type
+      @launch
     end
 
     def html_escape(value = nil, &block)
