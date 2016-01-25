@@ -23,29 +23,17 @@ body {
 }
 
 .prez-slide {
-    &, & input {
+    &, input, table {
         font-size: 50;
     }
 
     display: none;
     min-height: $prez-slide-min-height;
     padding: $prez-padding;
-    text-align: center;
 
-    .center-aligned {
-        text-align: center;
-    }
-
-    &.left-aligned, .left-aligned {
-        text-align: left;
-    }
-
-    .left-aligned {
-        padding-left: 5%;
-    }
-
-    &.right-aligned, .right-aligned {
-        text-align: right;
+    table td {
+        padding-left: 3%;
+        padding-right: 3%;
     }
 
     .prez-element.hide-style.hidden {
@@ -55,6 +43,38 @@ body {
     .prez-element.opacity-style.hidden {
         opacity: 0.25;
     }
+}
+
+.center-aligned, .prez-slide .center-aligned {
+    text-align: center;
+}
+
+.center-aligned table, .prez-slide table.center-aligned {
+    margin: 0 auto;
+}
+
+.left-aligned, .prez-slide .left-aligned {
+    text-align: left;
+}
+
+.left-aligned table, .prez-slide table.left-aligned {
+    margin: 0;
+}
+
+.left-aligned {
+    padding-left: 5%;
+}
+
+.right-aligned, .prez-slide .right-aligned {
+    text-align: right;
+}
+
+.right-aligned table, .prez-slide table.right-aligned {
+    margin: 0 0 0 auto;
+}
+
+.right-aligned {
+    padding-right: 5%;
 }
 
 .pre {

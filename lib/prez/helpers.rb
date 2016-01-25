@@ -76,6 +76,7 @@ module Prez
 
     def slide(options = {})
       classes = ["prez-slide"]
+      classes << options[:class] if options[:class]
       align = options.fetch :align, :center
 
       case align
@@ -84,7 +85,7 @@ module Prez
       when :right
         classes << "right-aligned"
       when :center
-        # Nothing needed
+        classes << "center-aligned"
       else
         raise Prez::Error.new("Invalid slide align: #{align.inspect}")
       end
@@ -100,7 +101,9 @@ module Prez
 
     def element(options = {})
       tag = options.fetch :tag, :div
-      concat %{<#{tag} class="prez-element">}
+      classes = ["prez-element"]
+      classes << options[:class] if options[:class]
+      concat %{<#{tag} class="#{classes.join " "}">}
       yield
       concat %{</#{tag}>}
     end
