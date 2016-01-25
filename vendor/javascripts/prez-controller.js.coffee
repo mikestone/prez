@@ -7,6 +7,7 @@ $.fn.slideDuration = ->
 class Prez
     DEFAULT_OPTIONS =
         useHash: true
+        displayTime: true
         duration: 0
         slideElementStyle: "hide"
 
@@ -14,10 +15,19 @@ class Prez
         @options = $.extend {}, DEFAULT_OPTIONS, options
         @window = options.window
         @document = @window.document
-        @document.write $("#slides-document").text()
+
+        if options.content
+            @document.write options.content
+            delete options.content
+        else
+            @document.write $("#slides-document").text()
+
         @document.close()
         @options.beforeStart?(@)
         @start()
+
+    showTime: ->
+        @options.displayTime
 
     start: ->
         changeToHashSlide = =>
@@ -205,6 +215,7 @@ class Prez
 
         timeChange: ->
             return unless Prez.current
+            return unless Prez.current.showTime()
             $(".prez-total-duration").text Prez.current.remainingPresentationTime()
             seconds = Prez.current.remainingPresentationSeconds()
             $(".prez-total-duration").toggleClass("prez-danger-time", seconds <= 60 && seconds >= 0)
@@ -237,40 +248,55 @@ $(document).on "click", "#new-window", (e) ->
 $(document).on "click", "#launch", (e) ->
     e.preventDefault()
     return if Prez.current
-
-    unless $("#new-window").is(".active")
-        $("#in-window-not-implemented-modal").modal "show"
-        return
-
+    useNewWindow = $("#new-window").is(".active")
     iframe = $("iframe")[0]
 
-    iframe = if iframe.contentWindow
-        iframe.contentWindow
-    else if iframe.contentDocument.document
-        iframe.contentDocument.document
+    iframe.getFrameWindow = ->
+        if @contentWindow
+            @contentWindow
+        else if @contentDocument.document
+            @contentDocument.document
+        else
+            @contentDocument
+
+
+    if useNewWindow
+        iframePrez = new Prez
+            window: iframe.getFrameWindow()
+            useHash: false
+            slideElementStyle: "opacity"
+
+        Prez.current = new Prez
+            duration: Prez.timeToSeconds($("#prez-duration").val())
+            window: window.open("", "prez", "width=640,height=480")
+            slideChanged: ($slide, slideNumber, elementNumber) ->
+                notes = $slide.find(".prez-notes").html() || ""
+                $("#slide-notes").html notes
+                $(".current-slide-number:not(select)").text $slide.data("slide")
+                $("select.current-slide-number").val $slide.data("slide")
+                Prez.handlers.timeChange()
+                iframePrez.changeSlideTo slideNumber, elementNumber
+            beforeStart: (prez) ->
+                $("select.current-slide-number").empty()
+
+                for i in [1..prez.countSlides()]
+                    $("select.current-slide-number").append """<option value="#{i}">#{i}</option>"""
     else
-        iframe.contentDocument
+        $iframe = $(iframe).detach().css
+            position: "absolute"
+            left: "0px"
+            top: "0px"
+            width: "100%"
+            height: "100%"
+            zIndex: 10000
+        iframeContent = $("#slides-document").text()
+        $("body").empty()
+        $iframe.prependTo("body")
 
-    iframePrez = new Prez
-        window: iframe
-        useHash: false
-        slideElementStyle: "opacity"
-
-    Prez.current = new Prez
-        duration: Prez.timeToSeconds($("#prez-duration").val())
-        window: window.open("", "prez", "width=640,height=480")
-        slideChanged: ($slide, slideNumber, elementNumber) ->
-            notes = $slide.find(".prez-notes").html() || ""
-            $("#slide-notes").html notes
-            $(".current-slide-number:not(select)").text $slide.data("slide")
-            $("select.current-slide-number").val $slide.data("slide")
-            Prez.handlers.timeChange()
-            iframePrez.changeSlideTo slideNumber, elementNumber
-        beforeStart: (prez) ->
-            $("select.current-slide-number").empty()
-
-            for i in [1..prez.countSlides()]
-                $("select.current-slide-number").append """<option value="#{i}">#{i}</option>"""
+        Prez.current = new Prez
+            displayTime: false
+            content: iframeContent
+            window: iframe.getFrameWindow()
 
     $(".total-slides").text Prez.current.countSlides()
     $("#pre-launch").hide()
@@ -303,6 +329,3 @@ $(window).bind "beforeunload", ->
 
 $(document).on "keydown", Prez.handlers.keyDown
 $.setInterval 50, Prez.handlers.timeChange
-
-$ ->
-    $("#in-window-not-implemented-modal").modal show: false
