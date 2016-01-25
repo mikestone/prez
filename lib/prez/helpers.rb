@@ -103,11 +103,17 @@ module Prez
         raise Prez::Error.new("Invalid slide align: #{align.inspect}")
       end
 
-      if options[:duration]
-        duration_attribute = %{ data-duration="#{options[:duration]}"}
+      attributes = [%{class="#{classes.join " "}"}]
+
+      if options[:style]
+        attributes << %{style="#{options[:style]}"}
       end
 
-      concat %{<div class="#{classes.join " "}"#{duration_attribute}>}
+      if options[:duration]
+        attributes << %{data-duration="#{options[:duration]}"}
+      end
+
+      concat %{<div #{attributes.join " "}>}
       yield
       concat %{</div>}
     end
@@ -116,9 +122,19 @@ module Prez
       tag = options.fetch :tag, :div
       classes = ["prez-element"]
       classes << options[:class] if options[:class]
-      concat %{<#{tag} class="#{classes.join " "}">}
+      attributes = [%{class="#{classes.join " "}"}]
+
+      if options[:style]
+        attributes << %{style="#{options[:style]}"}
+      end
+
+      concat %{<#{tag} #{attributes.join " "}>}
       yield
       concat %{</#{tag}>}
+    end
+
+    def element_js(up:, down:)
+      concat Prez::JavascriptElement.new(capture(&up), capture(&down)).to_s
     end
 
     def notes

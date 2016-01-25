@@ -87,13 +87,14 @@ class Prez
             @slideStarted $next
 
         if nextElement == 0
-            $next.find(".prez-element").addClass("hidden").removeClass("visible")
+            $next.find(".prez-element").each (i, e) =>
+                @hideElement $(e)
         else if @currentElement() > nextElement
             for i in [@currentElement()..(nextElement + 1)]
-                $next.find(".prez-element[data-slide-element='#{i}']").addClass("hidden").removeClass("visible")
+                @hideElement $next.find(".prez-element[data-slide-element='#{i}']")
         else if @currentElement() < nextElement
             for i in [(@currentElement() + 1)..nextElement]
-                $next.find(".prez-element[data-slide-element='#{i}']").removeClass("hidden").addClass("visible")
+                @showElement $next.find(".prez-element[data-slide-element='#{i}']")
 
         # Hack to fix Chrome sometimes not rendering opacity changes,
         # thanks to http://stackoverflow.com/a/8840703/122
@@ -102,6 +103,18 @@ class Prez
 
         @options.slideChanged? $next, nextValue, nextElement
         true
+
+    hideElement: ($element) ->
+        if $element.is(".visible[data-element-js]")
+            @window.elementJs[$element.data("element-js-down")]($)
+
+        $element.addClass("hidden").removeClass("visible")
+
+    showElement: ($element) ->
+        if $element.is(".hidden[data-element-js]")
+            @window.elementJs[$element.data("element-js-up")]($)
+
+        $element.removeClass("hidden").addClass("visible")
 
     currentSlide: ->
         return null if $(".prez-slide:visible", @document).size() == 0
