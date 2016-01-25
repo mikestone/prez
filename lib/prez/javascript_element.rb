@@ -16,15 +16,15 @@ module Prez
         <script>
           window.elementJs = window.elementJs || {};
 
-          window.elementJs.up#{@up_id} = function($) {
+          window.elementJs.up#{@id} = function($) {
             #{@up_js}
           };
 
-          window.elementJs.down#{@down_id} = function($) {
+          window.elementJs.down#{@id} = function($) {
             #{@down_js}
           };
         </script>
-        <span class="prez-element" data-element-js data-element-js-up="up#{@up_id}" data-element-js-down="down#{@down_id}"></span>
+        <span class="prez-element" data-element-js data-element-js-up="up#{@id}" data-element-js-down="down#{@id}"></span>
       EOF
     end
   end
