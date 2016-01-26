@@ -105,6 +105,10 @@ module Prez
 
       attributes = [%{class="#{classes.join " "}"}]
 
+      if options[:id]
+        attributes << %{id="#{options[:id]}"}
+      end
+
       if options[:style]
         attributes << %{style="#{options[:style]}"}
       end
@@ -123,6 +127,10 @@ module Prez
       classes = ["prez-element"]
       classes << options[:class] if options[:class]
       attributes = [%{class="#{classes.join " "}"}]
+
+      if options[:id]
+        attributes << %{id="#{options[:id]}"}
+      end
 
       if options[:style]
         attributes << %{style="#{options[:style]}"}

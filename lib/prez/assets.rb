@@ -72,6 +72,10 @@ module Prez
           attributes << %{height="#{options[:height]}"}
         end
 
+        if options[:id]
+          attributes << %{id="#{options[:id]}"}
+        end
+
         if options[:style]
           attributes << %{style="#{options[:style]}"}
         end
