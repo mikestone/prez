@@ -27,9 +27,17 @@ body {
         font-size: 50;
     }
 
+    &.inverse {
+        box-sizing: border-box;
+        background-color: #000000;
+        color: #ffffff;
+    }
+
     display: none;
     min-height: $prez-slide-min-height;
     padding: $prez-padding;
+    box-sizing: border-box;
+    height: 100%;
 
     table td {
         padding-left: 3%;
